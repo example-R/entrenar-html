@@ -1,0 +1,300 @@
+<html>
+	<head>
+		<title>HTML, CSS and JS trainer - by Roger Padrell</title>
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/example-R/apanya/main/favicon.ico">
+		<style>
+    .hover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+@font-face {
+font-family: "blocco";
+src: url("https://raw.githubusercontent.com/example-R/apanya/main/blocco.ttf");
+}
+button{
+  font-family: "blocco";
+  font-size: 50px;
+  width: 200px;
+  height: 70px;
+  border-radius: 5px;
+}
+.hover:hover {
+  cursor: pointer;
+}
+
+.hover-text {
+  all: unset;
+  font-size: 3rem;
+  color: D18B27;
+  position: relative;
+}
+
+.hover-text::after {
+  position: absolute;
+  content: "";
+  width: 0%;
+  height: 4px;
+  background-color: D18B27;
+  left: 50%;
+  bottom: -10px;
+  transition: all 0.4s ease-in-out;
+}
+
+.hover:hover .hover-text::after {
+  width: 100%;
+  left: 0;
+}
+.dropbtn {
+  background-color: #D18B27;
+  color: black;
+  padding: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #BD7E26;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #D18B27;
+  min-width: 200px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+.dropdown-content:last-child{
+  border-radius: 0px 0px 5px 5px;
+}
+
+.dropdown-content button, .dropdown-content a{
+  all: unset;
+  font-family: sans-serif;
+  width: 160px;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown button:hover, .dropdown a:hover {background-color: #BD7E26;}
+.dropbtn :focus{border-radius: 5px 5px 0px 0px}
+.show {display: block;}
+input::placeholder{
+  font-family: "blocco";
+  font-size: 40px;
+}
+#in, #in2{
+  all: unset;
+  height: 50px;
+  width: 200px;
+  background-color: #D18B27;
+  border: none;
+  border-radius: 5px;
+  font-family: "blocco";
+  font-size: 40px;
+}
+body{
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  font-family: "blocco";
+  font-size: 20px;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+</style>
+	</head>
+	<body id="b">
+		<div class="dropdown">
+  			<button onfocusout='document.getElementById("dropbtn").style.borderRadius = "5px 5px 5px 5px";' onfocus='document.getElementById("dropbtn").style.borderRadius = "5px 5px 0px 0px";' onclick="myFunction()" id="dropbtn" class="dropbtn">Options</button>
+  			<div id="myDropdown" class="dropdown-content">
+    			<button onclick="addIdea()">Add Idea</button>
+          <button onclick="showIdeas()">Show ideas</button>
+    			<button onclick="doIdea()">Do Idea</button>
+          <button onclick="addComment()">Add comment to an idea</button>
+    			<button onclick="saveIdea()">Save And Finish The Idea</button>
+          <button onclick="openSaveIdea()">Info from saved idea</button>
+  			</div>
+		</div>
+	</body>
+	<script>
+    function intro(){
+      var w = localStorage.what;
+      var h = localStorage.details.replaceAll("'","").split(",");
+      var m = localStorage.id.replaceAll("'","").split(",");
+      var v = localStorage.ideas.replaceAll("'","").split(",");
+      var k = localStorage.fIdeas.replaceAll("'","").split(",");
+      var o = localStorage.fFile.replaceAll("'","").split(",");
+      if(w == "addIdea"){
+        if(document.getElementById("in2").value === undefined || document.getElementById("in").value === undefined){
+          alert("Fill the two inputs")
+        }
+        else{
+          h.push(document.getElementById("in2").value)
+          v.push(document.getElementById("in").value)
+          m.push(Math.floor(Math.random() * 101))
+          document.getElementById("in").value = "";
+          document.getElementById("in2").value = "";
+          localStorage.ideas = v.toString()
+          localStorage.id = m.toString()
+          localStorage.details = h.toString()
+        }
+      }
+      else if(w == "doIdea"){
+        var t = document.getElementById("in").value;
+        if(v.includes(t)){
+          document.getElementById("info").innerHTML = "<p style='color:#D18B27; font-size: 50px'>Idea: " + v[v.indexOf(t)] + "<br>Details: " + h[v.indexOf(t)] + "<br>Id: " + m[v.indexOf(t)] + "</p>";
+        }
+        else{
+          alert("We do not found that idea :(")
+        }
+      }
+      else if(w == "addComment"){
+        if(document.getElementById("in2").value === undefined || document.getElementById("in").value === undefined){
+          alert("Fill the two inputs")
+        }
+        else{
+          var t = document.getElementById("in").value;
+          var t2t = document.getElementById("in2").value;
+          if(v.includes(t)){
+            h[v.indexOf(t)] = h[v.indexOf(t)] + "<br>Comment: " + t2t;
+            localStorage.details = h.toString()
+            document.getElementById("in").value = ""
+            document.getElementById("in2").value = ""
+          }
+          else{
+            alert("We do not found that idea :(")
+          }
+        }
+      }
+      else if(w == "saveIdea"){
+        if(document.getElementById("in2").value === undefined || document.getElementById("in").value === undefined){
+          alert("Fill the two inputs")
+        }
+        else{
+          var t = document.getElementById("in").value;
+          var t2t = document.getElementById("in2").value;
+          if(v.includes(t)){
+            console.log(v.indexOf(t))
+            v.splice(v.indexOf(t))
+            h.splice(v.indexOf(t))
+            m.splice(v.indexOf(t))
+            k.push(t)
+            localStorage.fIdeas = k.toString()
+            localStorage.ideas = v.toString()
+            localStorage.details = h.toString()
+            localStorage.id = m.toString()
+            o.push(t2t)
+            localStorage.fFile = o.toString()
+            document.getElementById("in").value = ""
+            document.getElementById("in2").value = ""
+          }
+          else{
+            alert("We do not found that idea :(")
+          }
+        }
+      }
+      else if(w == "openSaveIdea"){
+        var t = document.getElementById("in").value;
+        if(k.includes(t)){
+          document.getElementById("info").innerHTML = "<p style='color:#D18B27; font-size: 50px'>Idea name: " + k[k.indexOf(t)] + "<br>File path: " + o[k.indexOf(t)] + "</p>";
+        }
+        else{
+          alert("We do not found that idea :(")
+        }
+      }    
+    }
+    localStorage.what = "nothing";
+		if(localStorage.ideas === undefined){
+			localStorage.ideas = "'Style google','Finish and style the entrenar.html file'"
+		}
+		else{
+			var ideas = localStorage.ideas.replaceAll("'","").split(",")
+		}
+    if(localStorage.details === undefined){
+      localStorage.details = "'You have to style google in a pastell moot mode.','You will need time to finish it. But do not stay without it.'"
+    }
+    else{
+      var details = localStorage.details.replaceAll("'","").split(",")
+    }
+    if(localStorage.id === undefined){
+      localStorage.id = "001,002"
+    }
+    else{
+      var id = localStorage.id.replaceAll("'","").split(",")
+    }
+    if(localStorage.fIdeas === undefined){
+      var nap = []
+      localStorage.fIdeas = nap.toString()
+    }
+    else{
+      var fIdeas = localStorage.fIdeas.replaceAll("'","").split(",")
+    }
+    if(localStorage.fFile === undefined){
+      var nap = []
+      localStorage.fFile = nap.toString()
+    }
+    else{
+      var fFile = localStorage.fFile.replaceAll("'","").split(",")
+    }
+		function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+function addIdea(){
+  localStorage.what = "addIdea";
+	document.getElementById("b").innerHTML = "<br><br><br><input type='text' id='in' placeholder='Write idea here'></input><br><input type='text' id='in2' placeholder='Write details here'></input><br><div class='hover'><a href='" + window.location.href + "' class='hover-text'>Go back</a></div>"
+}
+function showIdeas(){
+  var v = localStorage.ideas.replaceAll("'","").split(",");
+  localStorage.what = "showIdeas";
+  document.getElementById("b").innerHTML = "<br><br><br><div style='color:#D18B27;font-size:50px' id='info'>" + v.toString().replaceAll(",",",<br>") + "</div><br><br><div class='hover'><a href='" + window.location.href + "' class='hover-text'>Go back</a></div>"
+}
+function doIdea(){
+  localStorage.what = "doIdea";
+  document.getElementById("b").innerHTML = "<br><br><br><input type='text' id='in' placeholder='Write idea here'></input><div id='info'></div><br><br><div class='hover'><a href='" + window.location.href + "' class='hover-text'>Go back</a></div>"
+}
+function addComment(){
+  localStorage.what = "addComment";
+  document.getElementById("b").innerHTML = "<br><br><br><input type='text' id='in' placeholder='Write idea here'></input><br><input type='text' id='in2' placeholder='Write comment here'></input><br><div class='hover'><a href='" + window.location.href + "' class='hover-text'>Go back</a></div>"
+}
+function saveIdea(){
+  localStorage.what = "saveIdea";
+  document.getElementById("b").innerHTML = "<br><br><br><input type='text' id='in' placeholder='Write idea here'></input><br><input type='text' id='in2' placeholder='Write file path here'></input><br><div class='hover'><a href='" + window.location.href + "' class='hover-text'>Go back</a></div>"
+}
+function openSaveIdea(){
+  localStorage.what = "openSaveIdea";
+  document.getElementById("b").innerHTML = "<br><br><br><input type='text' id='in' placeholder='Write idea here'></input><div id='info'></div><br><br><div class='hover'><a href='" + window.location.href + "' class='hover-text'>Go back</a></div>"
+}
+advance = function(event){
+  if(event.keyCode === 13){
+    intro()
+  }
+}
+window.addEventListener("keypress",advance)
+	</script>
+</html>
