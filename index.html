@@ -125,6 +125,8 @@ body{
           <button onclick="addComment()">Add comment to an idea</button>
     			<button onclick="saveIdea()">Save And Finish The Idea</button>
           <button onclick="openSaveIdea()">Info from saved idea</button>
+				<button onclick="addIdea()">Add Idea</button>
+          <button onclick="showFIdeas()">Show saved ideas</button>
   			</div>
 		</div>
 	</body>
@@ -272,6 +274,11 @@ function addIdea(){
 function showIdeas(){
   var v = localStorage.ideas.replaceAll("'","").split(",");
   localStorage.what = "showIdeas";
+  document.getElementById("b").innerHTML = "<br><br><br><div style='color:#D18B27;font-size:50px' id='info'>" + v.toString().replaceAll(",",",<br>") + "</div><br><br><div class='hover'><a href='" + window.location.href + "' class='hover-text'>Go back</a></div>"
+}
+function showFIdeas(){
+  var v = localStorage.fIdeas.replaceAll("'","").split(",");
+  localStorage.what = "showFIdeas";
   document.getElementById("b").innerHTML = "<br><br><br><div style='color:#D18B27;font-size:50px' id='info'>" + v.toString().replaceAll(",",",<br>") + "</div><br><br><div class='hover'><a href='" + window.location.href + "' class='hover-text'>Go back</a></div>"
 }
 function doIdea(){
